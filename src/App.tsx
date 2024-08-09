@@ -1,63 +1,50 @@
 import { Comment } from "./components"
+import { Comment as CommentType } from "./types"
 
-export type Comment = {
-  id: number
-  name: string
-  comment: string
-  replies: Comment[]
-}
-
-const comments: Comment[] = [
+const comments: CommentType[] = [
   {
     id: 1,
-    name: "Name1",
-    comment: "Comment1",
+    comment: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
     replies: [
       {
         id: 2,
-        name: "Name2",
-        comment: "Comment2",
+        comment: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
         replies: [],
       },
       {
         id: 3,
-        name: "Name3",
-        comment: "Comment3",
+        comment: "There are many variations of passages of Lorem Ipsum available",
         replies: [],
       },
       {
         id: 4,
-        name: "Name4",
-        comment: "Comment4",
+        comment: "Lorem Ipsum is simply dummy text",
         replies: [],
       },
       {
         id: 8,
-        name: "Name8",
-        comment: "Comment8",
+        comment: "Sed ut perspiciatis unde omnis iste natus",
         replies: [
           {
             id: 5,
-            name: "Name5",
-            comment: "Comment5",
+            comment: "At vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos",
             replies: [],
           },
           {
             id: 6,
-            name: "Name6",
-            comment: "Comment6",
+            comment: "Duis aute irure dolor",
             replies: [],
           },
         ],
       },
     ],
   },
-  { id: 7, name: "Name7", comment: "Comment7", replies: [] },
+  { id: 7, comment: "Ut enim ad minima veniam", replies: [] },
 ]
 
 export default function App() {
   return (
-    <div className='mx-auto max-w-xl flex flex-col bg-purple-500 p-4'>
+    <div className='mx-auto max-w-xl flex flex-col bg-[#F3F5F8] px-4 pt-4'>
       {comments.map((c) => (
         <Comment {...c} />
       ))}
