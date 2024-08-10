@@ -1,6 +1,6 @@
 import { CommentTile } from "@/components"
 import { Comment } from "@/types"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { addNewReply, deleteReply, editReply } from "./utils"
 
 const data: Comment[] = [

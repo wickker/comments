@@ -1,13 +1,13 @@
 import { type Comment } from "@/types"
 import { useState, ChangeEvent, useCallback } from "react"
 import { CommentInput, CommentText, CommentTileActions } from "@/components"
+import { validateInput } from "./utils"
 
 type CommentProps = {
   addNewReply: (commentId: number, newComment: Comment) => void
   editReply: (commentId: number, editedComment: string) => void
   deleteReply: (commentId: number) => void
 } & Comment
-
 const CommentTile = ({
   id,
   comment,
@@ -24,12 +24,6 @@ const CommentTile = ({
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
     setInput(e.target.value)
 
-  const validateInput = () => {
-    if (!input.trim()) return false
-    // TODO: Check for scripts / SQL injection
-    return true
-  }
-
   const toggleIsExpanded = useCallback(() => setIsExpanded((prev) => !prev), [])
 
   const handleReply = useCallback(() => {
@@ -41,7 +35,7 @@ const CommentTile = ({
   const closeReply = () => setIsReplyVisible(false)
 
   const submitReply = () => {
-    if (!validateInput()) return
+    if (!validateInput(input)) return
     addNewReply(id, {
       id: Date.now(),
       comment: input,
@@ -60,23 +54,14 @@ const CommentTile = ({
   const closeEdit = () => setIsEditVisible(false)
 
   const submitEdit = () => {
-    if (!validateInput()) return
+    if (!validateInput(input)) return
     editReply(id, input)
     closeEdit()
   }
 
   return (
     <div className="flex flex-col gap-y-4">
-      {isEditVisible ? (
-        // Edit reply
-        <CommentInput
-          input={input}
-          isInputVisible={isEditVisible}
-          onCancel={closeEdit}
-          onSubmit={submitEdit}
-          onChange={handleInputChange}
-        />
-      ) : (
+      {!isEditVisible && (
         <div className="rounded-md bg-[#E4E8EF] p-2">
           <CommentText comment={comment} />
           <CommentTileActions
@@ -90,6 +75,15 @@ const CommentTile = ({
           />
         </div>
       )}
+      
+      {/* Edit reply */}
+      <CommentInput
+        input={input}
+        isInputVisible={isEditVisible}
+        onCancel={closeEdit}
+        onSubmit={submitEdit}
+        onChange={handleInputChange}
+      />
 
       <div className="pl-8">
         {/* Add new reply */}

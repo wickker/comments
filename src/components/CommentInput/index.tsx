@@ -37,7 +37,7 @@ const CommentInput = ({
             ref={(ref) => isInputVisible && ref && ref.focus()}
             onFocus={handleFocus}
           />
-          
+
           <CommentInputActions onCancel={onCancel} onSubmit={onSubmit} />
         </div>
       )}
