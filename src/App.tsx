@@ -74,7 +74,7 @@ export default function App() {
   return (
     <div className="mx-auto flex max-w-xl flex-col bg-[#F3F5F8] px-4 pt-4">
       {comments.map((c) => (
-        <CommentTile {...c} key={c.id} />
+        <CommentTile {...c} key={c.id} addNewReply={handleAddNewReply}/>
       ))}
     </div>
   )

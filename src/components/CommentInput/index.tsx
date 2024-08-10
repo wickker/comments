@@ -1,17 +1,19 @@
-import { ChangeEvent} from "react"
+import { ChangeEvent } from "react"
 
 type CommentInputProps = {
   input: string
   isInputVisible: boolean
-  onClose: () => void
+  onCancel: () => void
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
+  onSubmit: () => void
 }
 
 export default function CommentInput({
   input,
   isInputVisible,
   onChange,
-  onClose,
+  onCancel,
+  onSubmit,
 }: CommentInputProps) {
   return (
     <>
@@ -24,10 +26,12 @@ export default function CommentInput({
           />
 
           <div className="mt-2 flex justify-end gap-x-4">
-            <button className="text-blue-500 underline" onClick={onClose}>
+            <button className="text-cyan-500 underline" onClick={onCancel}>
               Cancel
             </button>
-            <button className="text-blue-500 underline">Submit</button>
+            <button className="text-cyan-500 underline" onClick={onSubmit}>
+              Submit
+            </button>
           </div>
         </div>
       )}
