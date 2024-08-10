@@ -1,5 +1,5 @@
 import { type Comment } from "@/types"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { CommentInput } from "@/components"
 
 type CommentProps = Comment
@@ -7,14 +7,21 @@ type CommentProps = Comment
 export default function CommentTile({ comment, replies }: CommentProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isInputVisible, setIsInputVisible] = useState(false)
+  const [input, setInput] = useState("")
 
   const openInput = () => setIsInputVisible(true)
 
   const closeInput = () => setIsInputVisible(false)
 
+  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
+    setInput(e.target.value)
+
   const handleReply = () => {
     openInput()
+    setInput("")
   }
+
+  
 
   return (
     <div className="flex flex-col gap-y-4">
@@ -39,7 +46,12 @@ export default function CommentTile({ comment, replies }: CommentProps) {
       </div>
 
       <div className="pl-8">
-        <CommentInput isInputVisible={isInputVisible} closeInput={closeInput} />
+        <CommentInput
+          isInputVisible={isInputVisible}
+          onClose={closeInput}
+          onChange={handleInputChange}
+          input={input}
+        />
 
         {isExpanded &&
           replies.map((reply) => <CommentTile {...reply} key={reply.id} />)}
