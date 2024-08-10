@@ -27,13 +27,13 @@ export default function CommentTile({ comment, replies }: CommentProps) {
       </div>
 
       <div className="pl-8">
-        <div className="rounded-md bg-[#E4E8EF] p-2 mb-4">
+        {/* <div className="rounded-md bg-[#E4E8EF] p-2 mb-4">
           <textarea className='block rounded-md border p-2 w-full'/>
           <div className="mt-2 flex gap-x-4 justify-end">
             <button className="text-blue-500 underline">Cancel</button>
             <button className="text-blue-500 underline">Submit</button>
           </div>
-        </div>
+        </div> */}
 
         {isExpanded &&
           replies.map((reply) => <CommentTile {...reply} key={reply.id} />)}

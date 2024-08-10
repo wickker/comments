@@ -1,7 +1,8 @@
+import { useState } from "react"
 import { CommentTile } from "./components"
 import { Comment as CommentType } from "./types"
 
-const comments: CommentType[] = [
+const data: CommentType[] = [
   {
     id: 1,
     comment:
@@ -47,6 +48,29 @@ const comments: CommentType[] = [
 ]
 
 export default function App() {
+  const [comments, setComments] = useState(data)
+
+  const addNewComment = (
+    comments: CommentType[],
+    commentId: number,
+    newComment: CommentType,
+  ): CommentType[] =>
+    comments.map((comment) => {
+      if (comment.id === commentId) {
+        return {
+          ...comment,
+          replies: [...comment.replies, newComment],
+        }
+      }
+      return {
+        ...comment,
+        replies: addNewComment(comment.replies, commentId, newComment),
+      }
+    })
+
+  const handleAddNewComment = (commentId: number, newComment: CommentType) => setComments(addNewComment(comments, commentId, newComment))
+  
+
   return (
     <div className="mx-auto flex max-w-xl flex-col bg-[#F3F5F8] px-4 pt-4">
       {comments.map((c) => (
