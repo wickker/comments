@@ -1,5 +1,5 @@
 import { type Comment } from "@/types"
-import { ChangeEvent, useState } from "react"
+import { useState, ChangeEvent } from "react"
 import { CommentInput } from "@/components"
 
 type CommentProps = {
@@ -16,6 +16,7 @@ export default function CommentTile({
 }: CommentProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isReplyVisible, setIsReplyVisible] = useState(false)
+  const [isEditVisible, setIsEditVisible] = useState(false)
   const [input, setInput] = useState("")
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
@@ -28,6 +29,7 @@ export default function CommentTile({
   }
 
   const handleReply = () => {
+    setIsEditVisible(false)
     setIsReplyVisible(true)
     setInput("")
   }
@@ -45,27 +47,54 @@ export default function CommentTile({
     setIsExpanded(true)
   }
 
+  const handleEdit = () => {
+    setIsReplyVisible(false)
+    setIsEditVisible(true)
+    setInput(comment)
+  }
+
+  const closeEdit = () => setIsEditVisible(false)
+
+  const submitEdit = () => {
+    if (!validateInput()) return
+    editReply(id, input)
+    closeEdit()
+  }
+  
   return (
     <div className="flex flex-col gap-y-4">
-      <div className="rounded-md bg-[#E4E8EF] p-2">
-        <p className="whitespace-pre-wrap">{comment}</p>
+      {isEditVisible ? (
+        // Edit reply
+        <CommentInput
+          input={input}
+          isInputVisible={isEditVisible}
+          onCancel={closeEdit}
+          onSubmit={submitEdit}
+          onChange={handleInputChange}
+        />
+      ) : (
+        <div className="rounded-md bg-[#E4E8EF] p-2">
+          <p className="whitespace-pre-wrap p-2">{comment}</p>
 
-        <div className="mt-2 flex gap-x-4">
-          <button className="text-blue-500 underline" onClick={handleReply}>
-            Reply
-          </button>
-          <button className="text-blue-500 underline">Edit</button>
-          <button className="text-blue-500 underline">Delete</button>
-          {replies.length > 0 && (
-            <button
-              className="text-blue-500 underline"
-              onClick={() => setIsExpanded((prev) => !prev)}
-            >
-              {isExpanded ? "Hide" : "Show"} replies
+          <div className="ml-2 mt-2 flex gap-x-4">
+            <button className="text-blue-500 underline" onClick={handleReply}>
+              Reply
             </button>
-          )}
+            <button className="text-blue-500 underline" onClick={handleEdit}>
+              Edit
+            </button>
+            <button className="text-blue-500 underline">Delete</button>
+            {replies.length > 0 && (
+              <button
+                className="text-blue-500 underline"
+                onClick={() => setIsExpanded((prev) => !prev)}
+              >
+                {isExpanded ? "Hide" : "Show"} replies
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="pl-8">
         {/* Add new reply */}
@@ -73,8 +102,8 @@ export default function CommentTile({
           input={input}
           isInputVisible={isReplyVisible}
           onCancel={closeReply}
-          onChange={handleInputChange}
           onSubmit={submitReply}
+          onChange={handleInputChange}
           className="mb-4"
         />
 
