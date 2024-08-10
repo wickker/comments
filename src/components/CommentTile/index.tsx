@@ -4,6 +4,7 @@ import { CommentInput } from "@/components"
 
 type CommentProps = {
   addNewReply: (commentId: number, newComment: Comment) => void
+  editReply: (commentId: number, editedComment: string) => void
 } & Comment
 
 export default function CommentTile({
@@ -11,14 +12,11 @@ export default function CommentTile({
   comment,
   replies,
   addNewReply,
+  editReply,
 }: CommentProps) {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [isInputVisible, setIsInputVisible] = useState(false)
+  const [isReplyVisible, setIsReplyVisible] = useState(false)
   const [input, setInput] = useState("")
-
-  const openInput = () => setIsInputVisible(true)
-
-  const closeInput = () => setIsInputVisible(false)
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
     setInput(e.target.value)
@@ -30,18 +28,20 @@ export default function CommentTile({
   }
 
   const handleReply = () => {
-    openInput()
+    setIsReplyVisible(true)
     setInput("")
   }
 
-  const handleSubmitReply = () => {
+  const closeReply = () => setIsReplyVisible(false)
+
+  const submitReply = () => {
     if (!validateInput()) return
     addNewReply(id, {
       id: Date.now(),
       comment: input,
       replies: [],
     })
-    closeInput()
+    closeReply()
     setIsExpanded(true)
   }
 
@@ -71,14 +71,21 @@ export default function CommentTile({
         {/* Add new reply */}
         <CommentInput
           input={input}
-          isInputVisible={isInputVisible}
-          onCancel={closeInput}
+          isInputVisible={isReplyVisible}
+          onCancel={closeReply}
           onChange={handleInputChange}
-          onSubmit={handleSubmitReply}
+          onSubmit={submitReply}
         />
 
         {isExpanded &&
-          replies.map((reply) => <CommentTile {...reply} key={reply.id} addNewReply={addNewReply} />)}
+          replies.map((reply) => (
+            <CommentTile
+              {...reply}
+              key={reply.id}
+              addNewReply={addNewReply}
+              editReply={editReply}
+            />
+          ))}
       </div>
     </div>
   )

@@ -68,13 +68,39 @@ export default function App() {
       }
     })
 
-  const handleAddNewReply = (commentId: number, newComment: CommentType) => setComments(addNewReply(comments, commentId, newComment))
-  
+  const editReply = (
+    comments: CommentType[],
+    commentId: number,
+    editedComment: string,
+  ): CommentType[] =>
+    comments.map((comment) => {
+      if (comment.id === commentId) {
+        return {
+          ...comment,
+          comment: editedComment,
+        }
+      }
+      return {
+        ...comment,
+        replies: editReply(comment.replies, commentId, editedComment),
+      }
+    })
+
+  const handleAddNewReply = (commentId: number, newComment: CommentType) =>
+    setComments(addNewReply(comments, commentId, newComment))
+
+  const handleEditReply = (commentId: number, editedComment: string) =>
+    setComments(editReply(comments, commentId, editedComment))
 
   return (
     <div className="mx-auto flex max-w-xl flex-col bg-[#F3F5F8] px-4 pt-4">
       {comments.map((c) => (
-        <CommentTile {...c} key={c.id} addNewReply={handleAddNewReply}/>
+        <CommentTile
+          {...c}
+          key={c.id}
+          addNewReply={handleAddNewReply}
+          editReply={handleEditReply}
+        />
       ))}
     </div>
   )
