@@ -1,6 +1,6 @@
 import { type Comment } from "@/types"
 import { useState, ChangeEvent } from "react"
-import { CommentInput } from "@/components"
+import { CommentInput, CommentText } from "@/components"
 
 type CommentProps = {
   addNewReply: (commentId: number, newComment: Comment) => void
@@ -8,14 +8,14 @@ type CommentProps = {
   deleteReply: (commentId: number) => void
 } & Comment
 
-export default function CommentTile({
+const CommentTile = ({
   id,
   comment,
   replies,
   addNewReply,
   editReply,
   deleteReply,
-}: CommentProps) {
+}: CommentProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isReplyVisible, setIsReplyVisible] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
@@ -76,7 +76,7 @@ export default function CommentTile({
         />
       ) : (
         <div className="rounded-md bg-[#E4E8EF] p-2">
-          <p className="whitespace-pre-wrap p-2">{comment}</p>
+          <CommentText comment={comment} />
 
           <div className="ml-2 mt-2 flex gap-x-4">
             <button className="text-blue-500 underline" onClick={handleReply}>
@@ -123,3 +123,5 @@ export default function CommentTile({
     </div>
   )
 }
+
+export default CommentTile

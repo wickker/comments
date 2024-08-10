@@ -1,5 +1,6 @@
 import { mc } from "@/utils/functions/common"
 import { ChangeEvent, FocusEvent } from "react"
+import { CommentInputActions } from "@/components"
 
 type CommentInputProps = {
   input: string
@@ -10,14 +11,14 @@ type CommentInputProps = {
   onSubmit: () => void
 }
 
-export default function CommentInput({
+const CommentInput = ({
   input,
   isInputVisible,
   className,
   onChange,
   onCancel,
   onSubmit,
-}: CommentInputProps) {
+}: CommentInputProps) => {
   const handleFocus = (e: FocusEvent<HTMLTextAreaElement>) =>
     e.currentTarget.setSelectionRange(
       e.currentTarget.value.length,
@@ -36,17 +37,12 @@ export default function CommentInput({
             ref={(ref) => isInputVisible && ref && ref.focus()}
             onFocus={handleFocus}
           />
-
-          <div className="mt-2 flex justify-end gap-x-4">
-            <button className="text-cyan-500 underline" onClick={onCancel}>
-              Cancel
-            </button>
-            <button className="text-cyan-500 underline" onClick={onSubmit}>
-              Submit
-            </button>
-          </div>
+          
+          <CommentInputActions onCancel={onCancel} onSubmit={onSubmit} />
         </div>
       )}
     </>
   )
 }
+
+export default CommentInput
