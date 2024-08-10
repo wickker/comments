@@ -1,6 +1,6 @@
 import { type Comment } from "@/types"
-import { useState, ChangeEvent } from "react"
-import { CommentInput, CommentText } from "@/components"
+import { useState, ChangeEvent, useCallback } from "react"
+import { CommentInput, CommentText, CommentTileActions } from "@/components"
 
 type CommentProps = {
   addNewReply: (commentId: number, newComment: Comment) => void
@@ -30,11 +30,13 @@ const CommentTile = ({
     return true
   }
 
-  const handleReply = () => {
+  const toggleIsExpanded = useCallback(() => setIsExpanded((prev) => !prev), [])
+
+  const handleReply = useCallback(() => {
     setIsEditVisible(false)
     setIsReplyVisible(true)
     setInput("")
-  }
+  }, [])
 
   const closeReply = () => setIsReplyVisible(false)
 
@@ -49,11 +51,11 @@ const CommentTile = ({
     setIsExpanded(true)
   }
 
-  const handleEdit = () => {
+  const handleEdit = useCallback(() => {
     setIsReplyVisible(false)
     setIsEditVisible(true)
     setInput(comment)
-  }
+  }, [comment])
 
   const closeEdit = () => setIsEditVisible(false)
 
@@ -62,7 +64,7 @@ const CommentTile = ({
     editReply(id, input)
     closeEdit()
   }
-  
+
   return (
     <div className="flex flex-col gap-y-4">
       {isEditVisible ? (
@@ -77,24 +79,15 @@ const CommentTile = ({
       ) : (
         <div className="rounded-md bg-[#E4E8EF] p-2">
           <CommentText comment={comment} />
-
-          <div className="ml-2 mt-2 flex gap-x-4">
-            <button className="text-blue-500 underline" onClick={handleReply}>
-              Reply
-            </button>
-            <button className="text-blue-500 underline" onClick={handleEdit}>
-              Edit
-            </button>
-            <button className="text-blue-500 underline" onClick={() => deleteReply(id)}>Delete</button>
-            {replies.length > 0 && (
-              <button
-                className="text-blue-500 underline"
-                onClick={() => setIsExpanded((prev) => !prev)}
-              >
-                {isExpanded ? "Hide" : "Show"} replies
-              </button>
-            )}
-          </div>
+          <CommentTileActions
+            id={id}
+            handleReply={handleReply}
+            handleEdit={handleEdit}
+            deleteReply={deleteReply}
+            hasReplies={replies.length > 0}
+            isExpanded={isExpanded}
+            toggleIsExpanded={toggleIsExpanded}
+          />
         </div>
       )}
 
