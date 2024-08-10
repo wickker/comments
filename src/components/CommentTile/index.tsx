@@ -5,6 +5,7 @@ import { CommentInput } from "@/components"
 type CommentProps = {
   addNewReply: (commentId: number, newComment: Comment) => void
   editReply: (commentId: number, editedComment: string) => void
+  deleteReply: (commentId: number) => void
 } & Comment
 
 export default function CommentTile({
@@ -13,6 +14,7 @@ export default function CommentTile({
   replies,
   addNewReply,
   editReply,
+  deleteReply,
 }: CommentProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isReplyVisible, setIsReplyVisible] = useState(false)
@@ -83,7 +85,7 @@ export default function CommentTile({
             <button className="text-blue-500 underline" onClick={handleEdit}>
               Edit
             </button>
-            <button className="text-blue-500 underline">Delete</button>
+            <button className="text-blue-500 underline" onClick={() => deleteReply(id)}>Delete</button>
             {replies.length > 0 && (
               <button
                 className="text-blue-500 underline"
@@ -114,6 +116,7 @@ export default function CommentTile({
               key={reply.id}
               addNewReply={addNewReply}
               editReply={editReply}
+              deleteReply={deleteReply}
             />
           ))}
       </div>

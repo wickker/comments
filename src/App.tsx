@@ -86,11 +86,24 @@ export default function App() {
       }
     })
 
+  const deleteReply = (comments: CommentType[], commentId: number): CommentType[] => {
+    const filtered = comments.filter((comment) => comment.id !== commentId)
+    if (filtered.length < comments.length) {
+      return filtered
+    }
+    return comments.map((comment) => ({
+      ...comment,
+      replies: deleteReply(comment.replies, commentId),
+    }))
+  }
+
   const handleAddNewReply = (commentId: number, newComment: CommentType) =>
     setComments(addNewReply(comments, commentId, newComment))
 
   const handleEditReply = (commentId: number, editedComment: string) =>
     setComments(editReply(comments, commentId, editedComment))
+
+  const handleDeleteReply = (commentId: number) => setComments(deleteReply(comments, commentId))
 
   return (
     <div className="mx-auto flex max-w-xl flex-col bg-[#F3F5F8] px-4 pt-4">
@@ -100,6 +113,7 @@ export default function App() {
           key={c.id}
           addNewReply={handleAddNewReply}
           editReply={handleEditReply}
+          deleteReply={handleDeleteReply}
         />
       ))}
     </div>
