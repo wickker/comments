@@ -1,8 +1,10 @@
+import { mc } from "@/utils/functions/common"
 import { ChangeEvent } from "react"
 
 type CommentInputProps = {
   input: string
   isInputVisible: boolean
+  className?: string
   onCancel: () => void
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
   onSubmit: () => void
@@ -11,6 +13,7 @@ type CommentInputProps = {
 export default function CommentInput({
   input,
   isInputVisible,
+  className,
   onChange,
   onCancel,
   onSubmit,
@@ -18,7 +21,7 @@ export default function CommentInput({
   return (
     <>
       {isInputVisible && (
-        <div className="mb-4 rounded-md bg-[#E4E8EF] p-2">
+        <div className={mc("rounded-md bg-[#E4E8EF] p-2", className)}>
           <textarea
             className="block w-full rounded-md border p-2"
             value={input}

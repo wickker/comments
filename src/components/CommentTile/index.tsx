@@ -75,6 +75,7 @@ export default function CommentTile({
           onCancel={closeReply}
           onChange={handleInputChange}
           onSubmit={submitReply}
+          className="mb-4"
         />
 
         {isExpanded &&
