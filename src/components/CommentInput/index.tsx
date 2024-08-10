@@ -1,5 +1,5 @@
 import { mc } from "@/utils/functions/common"
-import { ChangeEvent, forwardRef } from "react"
+import { ChangeEvent, FocusEvent } from "react"
 
 type CommentInputProps = {
   input: string
@@ -10,14 +10,20 @@ type CommentInputProps = {
   onSubmit: () => void
 }
 
-const CommentInput = forwardRef(({
+export default function CommentInput({
   input,
   isInputVisible,
   className,
   onChange,
   onCancel,
   onSubmit,
-}: CommentInputProps) => {
+}: CommentInputProps) {
+  const handleFocus = (e: FocusEvent<HTMLTextAreaElement>) =>
+    e.currentTarget.setSelectionRange(
+      e.currentTarget.value.length,
+      e.currentTarget.value.length,
+    )
+
   return (
     <>
       {isInputVisible && (
@@ -27,15 +33,9 @@ const CommentInput = forwardRef(({
             className="block w-full rounded-md border p-[7px]"
             value={input}
             onChange={onChange}
+            ref={(ref) => isInputVisible && ref && ref.focus()}
+            onFocus={handleFocus}
           />
-          {/* <div
-            className="w-full whitespace-pre-wrap rounded-md border bg-white p-[7px]"
-            contentEditable
-            suppressContentEditableWarning
-            onInput={onInput}
-          >
-            {input}
-          </div> */}
 
           <div className="mt-2 flex justify-end gap-x-4">
             <button className="text-cyan-500 underline" onClick={onCancel}>
@@ -49,6 +49,4 @@ const CommentInput = forwardRef(({
       )}
     </>
   )
-})
-
-export default CommentInput
+}
