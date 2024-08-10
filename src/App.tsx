@@ -1,19 +1,22 @@
-import { Comment } from "./components"
+import { CommentTile } from "./components"
 import { Comment as CommentType } from "./types"
 
 const comments: CommentType[] = [
   {
     id: 1,
-    comment: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
+    comment:
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
     replies: [
       {
         id: 2,
-        comment: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
+        comment:
+          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
         replies: [],
       },
       {
         id: 3,
-        comment: "There are many variations of passages of Lorem Ipsum available",
+        comment:
+          "There are many variations of passages of Lorem Ipsum available",
         replies: [],
       },
       {
@@ -27,7 +30,8 @@ const comments: CommentType[] = [
         replies: [
           {
             id: 5,
-            comment: "At vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos",
+            comment:
+              "At vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos",
             replies: [],
           },
           {
@@ -44,9 +48,9 @@ const comments: CommentType[] = [
 
 export default function App() {
   return (
-    <div className='mx-auto max-w-xl flex flex-col bg-[#F3F5F8] px-4 pt-4'>
+    <div className="mx-auto flex max-w-xl flex-col bg-[#F3F5F8] px-4 pt-4">
       {comments.map((c) => (
-        <Comment {...c} />
+        <CommentTile {...c} key={c.id} />
       ))}
     </div>
   )
