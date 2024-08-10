@@ -50,7 +50,7 @@ const data: CommentType[] = [
 export default function App() {
   const [comments, setComments] = useState(data)
 
-  const addNewComment = (
+  const addNewReply = (
     comments: CommentType[],
     commentId: number,
     newComment: CommentType,
@@ -64,11 +64,11 @@ export default function App() {
       }
       return {
         ...comment,
-        replies: addNewComment(comment.replies, commentId, newComment),
+        replies: addNewReply(comment.replies, commentId, newComment),
       }
     })
 
-  const handleAddNewComment = (commentId: number, newComment: CommentType) => setComments(addNewComment(comments, commentId, newComment))
+  const handleAddNewReply = (commentId: number, newComment: CommentType) => setComments(addNewReply(comments, commentId, newComment))
   
 
   return (
