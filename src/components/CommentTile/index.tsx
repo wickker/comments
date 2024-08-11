@@ -1,7 +1,9 @@
 import { type Comment } from "@/types"
 import { useState, ChangeEvent, useCallback, useMemo } from "react"
-import { CommentInput, CommentText, CommentTileActions } from "@/components"
+import { CommentInput } from "@/components"
 import { validateInput } from "./utils"
+import CommentTileActions from "./CommentTileActions"
+import CommentText from "./CommentText"
 
 type CommentProps = {
   addNewReply: (commentId: number, newComment: Comment) => void
@@ -76,7 +78,7 @@ const CommentTile = ({
   }
 
   return (
-    <div className="flex flex-col gap-y-4 min-w-[600px]">
+    <div className="flex min-w-[600px] flex-col gap-y-4">
       {!isEditVisible && (
         <div className="rounded-md bg-[#E4E8EF] p-2">
           <CommentText comment={comment} />

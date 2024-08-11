@@ -3,17 +3,21 @@ import { Comment } from "@/types"
 import { useCallback, useEffect, useState } from "react"
 import { addNewReply, deleteReply, editReply } from "./utils"
 import useComment from "@/hooks/query/useComment"
-import { FiLoader } from "react-icons/fi"
 import useElementVisible from "@/hooks/useElementVisible"
+import Loader from "./Loader"
+import InfiniteScrollLoader from "./InfiniteScrollLoader"
 
 const Comments = () => {
   const [comments, setComments] = useState<Comment[]>([])
   const [offset, setOffset] = useState(0)
   const { useGetCommentsQuery } = useComment()
   const getComments = useGetCommentsQuery(offset)
+  const hasOffset = offset > 0
+  const hasComments = comments.length > 0
 
   const isVisibleCallback = useCallback(() => {
-    if (offset <= 30) { // hardcoded for demo purposes
+    if (offset <= 30) {
+      // hardcoded 30 for demo purposes
       setOffset((prev) => prev + 10)
       getComments.refetch()
     }
@@ -48,13 +52,9 @@ const Comments = () => {
     <>
       <AddNewComment addNewComment={handleAddNewComment} />
 
-      {getComments.isLoading && offset === 0 && (
-        <div className="my-auto grid place-items-center">
-          <FiLoader className="animate-spin text-4xl text-neutral-400" />
-        </div>
-      )}
+      {getComments.isLoading && !hasOffset && <Loader />}
 
-      {comments.length > 0 && (
+      {hasComments && (
         <>
           {comments.map((c) => (
             <CommentTile
@@ -65,10 +65,9 @@ const Comments = () => {
               deleteReply={handleDeleteReply}
             />
           ))}
-          {getComments.isLoading && offset > 0 ? (
-            <div className="grid place-items-center">
-              <FiLoader className="animate-spin text-2xl text-neutral-400" />
-            </div>
+
+          {getComments.isLoading && hasOffset ? (
+            <InfiniteScrollLoader />
           ) : (
             <div ref={observerRef} />
           )}

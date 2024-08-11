@@ -13,7 +13,7 @@ const queryClient = new QueryClient({
 
 const App = () => {
   return (
-    <div className="mx-auto max-w-[700px] p-4 min-h-[100dvh] flex flex-col">
+    <div className="mx-auto flex min-h-[100dvh] max-w-[700px] flex-col p-4">
       <QueryClientProvider client={queryClient}>
         <Comments />
       </QueryClientProvider>

@@ -5,12 +5,8 @@ type CommentInputActionsProps = {
   onSubmit: () => void
 }
 
-const CommentInputActions = memo(({
-  onCancel,
-  onSubmit,
-}: CommentInputActionsProps) => {
-
-  return (
+const CommentInputActions = memo(
+  ({ onCancel, onSubmit }: CommentInputActionsProps) => (
     <div className="mt-2 flex justify-end gap-x-4">
       <button className="text-cyan-500 underline" onClick={onCancel}>
         Cancel
@@ -19,7 +15,7 @@ const CommentInputActions = memo(({
         Submit
       </button>
     </div>
-  )
-})
+  ),
+)
 
 export default CommentInputActions
