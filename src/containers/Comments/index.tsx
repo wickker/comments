@@ -2,55 +2,12 @@ import { AddNewComment, CommentTile } from "@/components"
 import { Comment } from "@/types"
 import { useEffect, useState } from "react"
 import { addNewReply, deleteReply, editReply } from "./utils"
-import { getComments } from "@/api/dummyApi"
-
-const data: Comment[] = [
-  {
-    id: 1,
-    comment:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
-    replies: [
-      {
-        id: 2,
-        comment:
-          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout",
-        replies: [],
-      },
-      {
-        id: 3,
-        comment:
-          "There are many variations of passages of Lorem Ipsum available",
-        replies: [],
-      },
-      {
-        id: 4,
-        comment: "Lorem Ipsum is simply dummy text",
-        replies: [],
-      },
-      {
-        id: 8,
-        comment: "Sed ut perspiciatis unde omnis iste natus",
-        replies: [
-          {
-            id: 5,
-            comment:
-              "At vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos\nAt vero eos et accusamus et iusto odio dignissimos",
-            replies: [],
-          },
-          {
-            id: 6,
-            comment: "Duis aute irure dolor",
-            replies: [],
-          },
-        ],
-      },
-    ],
-  },
-  { id: 7, comment: "Ut enim ad minima veniam", replies: [] },
-]
+import useComment from "@/hooks/query/useComment"
 
 const Comments = () => {
-  const [comments, setComments] = useState(data)
+  const { useGetCommentsQuery } = useComment()
+  const getComments = useGetCommentsQuery()
+  const [comments, setComments] = useState<Comment[]>([])
 
   const handleAddNewReply = (commentId: number, newComment: Comment) =>
     setComments(addNewReply(comments, commentId, newComment))
@@ -63,18 +20,27 @@ const Comments = () => {
 
   const handleAddNewComment = (newComment: Comment) => setComments([...comments, newComment])
 
+  const generateCommentTiles = () => comments.map((c) => (
+    <CommentTile
+      {...c}
+      key={c.id}
+      addNewReply={handleAddNewReply}
+      editReply={handleEditReply}
+      deleteReply={handleDeleteReply}
+    />
+  ))
+
+  useEffect(() => {
+    if (getComments.data) {
+        setComments(getComments.data)
+    }
+  }, [getComments.data])
+
   return (
     <>
     <AddNewComment addNewComment={handleAddNewComment} />
-      {comments.map((c) => (
-        <CommentTile
-          {...c}
-          key={c.id}
-          addNewReply={handleAddNewReply}
-          editReply={handleEditReply}
-          deleteReply={handleDeleteReply}
-        />
-      ))}
+    {getComments.isLoading && <div>LOADING</div>}
+    {getComments.isFetched && comments.length > 0 && generateCommentTiles()}
     </>
   )
 }

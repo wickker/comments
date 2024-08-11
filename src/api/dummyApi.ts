@@ -1,7 +1,15 @@
-const baseUrl = "https://dummyjson.com"
+import { Comment } from "@/types"
 
-export const getComments = async () => {
-    const res = await fetch(`${baseUrl}/comments?limit=20&skip=0`)
+const baseUrl = "http://localhost:3000"
+
+const getComments = async (): Promise<Comment[]> => {
+    const res = await fetch(`${baseUrl}/comments`)
+    if (!res.ok) {
+        throw new Error(res.statusText)
+    }
     return await res.json()
 }
 
+export default {
+    getComments
+}

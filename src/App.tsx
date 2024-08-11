@@ -7,7 +7,7 @@ import {
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: (err) => console.error(err),
+    onError: (err) => console.error(err), // TODO: Add error notifications
   }),
 })
 
