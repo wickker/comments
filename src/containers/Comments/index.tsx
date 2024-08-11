@@ -1,16 +1,25 @@
 import { AddNewComment, CommentTile } from "@/components"
 import { Comment } from "@/types"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { addNewReply, deleteReply, editReply } from "./utils"
 import useComment from "@/hooks/query/useComment"
 import { FiLoader } from "react-icons/fi"
+import useElementVisible from "@/hooks/useElementVisible"
 
 const Comments = () => {
   const [comments, setComments] = useState<Comment[]>([])
   const [offset, setOffset] = useState(0)
-  const observerRef = useRef<HTMLDivElement>(null)
   const { useGetCommentsQuery } = useComment()
   const getComments = useGetCommentsQuery(offset)
+
+  const isVisibleCallback = useCallback(() => {
+    if (offset <= 30) { // hardcoded for demo purposes
+      setOffset((prev) => prev + 10)
+      getComments.refetch()
+    }
+  }, [getComments, offset])
+
+  const { observerRef } = useElementVisible(isVisibleCallback)
 
   const handleAddNewReply = (commentId: number, newComment: Comment) =>
     setComments(addNewReply(comments, commentId, newComment))
@@ -21,28 +30,9 @@ const Comments = () => {
   const handleDeleteReply = (commentId: number) =>
     setComments(deleteReply(comments, commentId))
 
-  const handleAddNewComment = (newComment: Comment) =>
-    setComments([newComment, ...comments])
-
-  const generateCommentTiles = () => (
-    <>
-      {comments.map((c) => (
-        <CommentTile
-          {...c}
-          key={c.id}
-          addNewReply={handleAddNewReply}
-          editReply={handleEditReply}
-          deleteReply={handleDeleteReply}
-        />
-      ))}
-      {getComments.isLoading && offset > 0 ? (
-        <div className="grid place-items-center">
-          <FiLoader className="animate-spin text-2xl text-neutral-400" />
-        </div>
-      ) : (
-        <div ref={observerRef} />
-      )}
-    </>
+  const handleAddNewComment = useCallback(
+    (newComment: Comment) => setComments((prev) => [newComment, ...prev]),
+    [],
   )
 
   useEffect(() => {
@@ -54,25 +44,6 @@ const Comments = () => {
     setComments((prev) => [...prev, ...getComments.data])
   }, [getComments.data, offset])
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries: IntersectionObserverEntry[]) => {
-        const [entry] = entries
-        // TODO: Refactor
-        if (entry.isIntersecting && offset <= 30) {
-          setOffset((prev) => prev + 10)
-          getComments.refetch()
-        }
-      },
-    )
-
-    if (observerRef.current) {
-      observer.observe(observerRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [observerRef, getComments, offset])
-
   return (
     <>
       <AddNewComment addNewComment={handleAddNewComment} />
@@ -83,7 +54,26 @@ const Comments = () => {
         </div>
       )}
 
-      {comments.length > 0 && generateCommentTiles()}
+      {comments.length > 0 && (
+        <>
+          {comments.map((c) => (
+            <CommentTile
+              {...c}
+              key={c.id}
+              addNewReply={handleAddNewReply}
+              editReply={handleEditReply}
+              deleteReply={handleDeleteReply}
+            />
+          ))}
+          {getComments.isLoading && offset > 0 ? (
+            <div className="grid place-items-center">
+              <FiLoader className="animate-spin text-2xl text-neutral-400" />
+            </div>
+          ) : (
+            <div ref={observerRef} />
+          )}
+        </>
+      )}
     </>
   )
 }

@@ -1,11 +1,11 @@
 import { Comment } from "@/types"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, memo, useState } from "react"
 
 type AddNewCommentProps = {
   addNewComment: (newComment: Comment) => void
 }
 
-const AddNewComment = ({ addNewComment }: AddNewCommentProps) => {
+const AddNewComment = memo(({ addNewComment }: AddNewCommentProps) => {
   const [input, setInput] = useState("")
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) =>
@@ -37,6 +37,6 @@ const AddNewComment = ({ addNewComment }: AddNewCommentProps) => {
       </button>
     </div>
   )
-}
+})
 
 export default AddNewComment
