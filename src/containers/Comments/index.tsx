@@ -1,6 +1,6 @@
-import { CommentTile } from "@/components"
+import { AddNewComment, CommentTile } from "@/components"
 import { Comment } from "@/types"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import { addNewReply, deleteReply, editReply } from "./utils"
 
 const data: Comment[] = [
@@ -51,25 +51,18 @@ const data: Comment[] = [
 const Comments = () => {
   const [comments, setComments] = useState(data)
 
-  const handleAddNewReply = useCallback(
-    (commentId: number, newComment: Comment) =>
-      setComments(addNewReply(comments, commentId, newComment)),
-    [comments],
-  )
+  const handleAddNewReply = (commentId: number, newComment: Comment) =>
+    setComments(addNewReply(comments, commentId, newComment))
 
-  const handleEditReply = useCallback(
-    (commentId: number, editedComment: string) =>
-      setComments(editReply(comments, commentId, editedComment)),
-    [comments],
-  )
+  const handleEditReply = (commentId: number, editedComment: string) =>
+    setComments(editReply(comments, commentId, editedComment))
 
-  const handleDeleteReply = useCallback(
-    (commentId: number) => setComments(deleteReply(comments, commentId)),
-    [comments],
-  )
+  const handleDeleteReply = (commentId: number) =>
+    setComments(deleteReply(comments, commentId))
 
   return (
     <>
+    <AddNewComment />
       {comments.map((c) => (
         <CommentTile
           {...c}
