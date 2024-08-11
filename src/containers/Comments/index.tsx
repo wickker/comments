@@ -1,7 +1,8 @@
 import { AddNewComment, CommentTile } from "@/components"
 import { Comment } from "@/types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { addNewReply, deleteReply, editReply } from "./utils"
+import { getComments } from "@/api/dummyApi"
 
 const data: Comment[] = [
   {
