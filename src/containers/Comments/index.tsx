@@ -1,14 +1,15 @@
 import { AddNewComment, CommentTile } from "@/components"
 import { Comment } from "@/types"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { addNewReply, deleteReply, editReply } from "./utils"
 import useComment from "@/hooks/query/useComment"
 import { FiLoader } from "react-icons/fi"
 
 const Comments = () => {
+  const [comments, setComments] = useState<Comment[]>([])
+  const observerRef = useRef<HTMLDivElement>(null)
   const { useGetCommentsQuery } = useComment()
   const getComments = useGetCommentsQuery()
-  const [comments, setComments] = useState<Comment[]>([])
 
   const handleAddNewReply = (commentId: number, newComment: Comment) =>
     setComments(addNewReply(comments, commentId, newComment))
@@ -22,22 +23,45 @@ const Comments = () => {
   const handleAddNewComment = (newComment: Comment) =>
     setComments([newComment, ...comments])
 
-  const generateCommentTiles = () =>
-    comments.map((c) => (
-      <CommentTile
-        {...c}
-        key={c.id}
-        addNewReply={handleAddNewReply}
-        editReply={handleEditReply}
-        deleteReply={handleDeleteReply}
-      />
-    ))
+  const generateCommentTiles = () => (
+    <>
+      {comments.map((c) => (
+        <CommentTile
+          {...c}
+          key={c.id}
+          addNewReply={handleAddNewReply}
+          editReply={handleEditReply}
+          deleteReply={handleDeleteReply}
+        />
+      ))}
+      <div className="bg-pink-300" ref={observerRef}>
+        Observer
+      </div>
+    </>
+  )
 
   useEffect(() => {
     if (getComments.data) {
       setComments(getComments.data)
     }
   }, [getComments.data])
+
+  const cb = (entries: IntersectionObserverEntry[]) => {
+    const [entry] = entries
+    console.log(entry.isIntersecting)
+}
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(cb)
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current)
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [observerRef])
 
   return (
     <>
