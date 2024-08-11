@@ -60,9 +60,11 @@ const Comments = () => {
   const handleDeleteReply = (commentId: number) =>
     setComments(deleteReply(comments, commentId))
 
+  const handleAddNewComment = (newComment: Comment) => setComments([...comments, newComment])
+
   return (
     <>
-    <AddNewComment />
+    <AddNewComment addNewComment={handleAddNewComment} />
       {comments.map((c) => (
         <CommentTile
           {...c}
