@@ -1,5 +1,5 @@
 import { type Comment } from "@/types"
-import { useState, ChangeEvent, useCallback } from "react"
+import { useState, ChangeEvent, useCallback, useMemo } from "react"
 import { CommentInput, CommentText, CommentTileActions } from "@/components"
 import { validateInput } from "./utils"
 
@@ -26,6 +26,21 @@ const CommentTile = ({
 
   const toggleIsExpanded = useCallback(() => setIsExpanded((prev) => !prev), [])
 
+  const replyTiles = useMemo(
+    () =>
+      replies.map((reply) => (
+        <CommentTile
+          {...reply}
+          key={reply.id}
+          addNewReply={addNewReply}
+          editReply={editReply}
+          deleteReply={deleteReply}
+        />
+      )),
+    [replies, addNewReply, editReply, deleteReply],
+  )
+
+  // Replies
   const handleReply = useCallback(() => {
     setIsEditVisible(false)
     setIsReplyVisible(true)
@@ -45,6 +60,7 @@ const CommentTile = ({
     setIsExpanded(true)
   }
 
+  // Edits
   const handleEdit = useCallback(() => {
     setIsReplyVisible(false)
     setIsEditVisible(true)
@@ -75,7 +91,7 @@ const CommentTile = ({
           />
         </div>
       )}
-      
+
       {/* Edit reply */}
       <CommentInput
         input={input}
@@ -96,16 +112,7 @@ const CommentTile = ({
           className="mb-4"
         />
 
-        {isExpanded &&
-          replies.map((reply) => (
-            <CommentTile
-              {...reply}
-              key={reply.id}
-              addNewReply={addNewReply}
-              editReply={editReply}
-              deleteReply={deleteReply}
-            />
-          ))}
+        {isExpanded && replyTiles}
       </div>
     </div>
   )

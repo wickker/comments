@@ -51,14 +51,22 @@ const data: Comment[] = [
 const Comments = () => {
   const [comments, setComments] = useState(data)
 
-  const handleAddNewReply = (commentId: number, newComment: Comment) =>
-    setComments(addNewReply(comments, commentId, newComment))
+  const handleAddNewReply = useCallback(
+    (commentId: number, newComment: Comment) =>
+      setComments(addNewReply(comments, commentId, newComment)),
+    [comments],
+  )
 
-  const handleEditReply = (commentId: number, editedComment: string) =>
-    setComments(editReply(comments, commentId, editedComment))
+  const handleEditReply = useCallback(
+    (commentId: number, editedComment: string) =>
+      setComments(editReply(comments, commentId, editedComment)),
+    [comments],
+  )
 
-  const handleDeleteReply = (commentId: number) =>
-    setComments(deleteReply(comments, commentId))
+  const handleDeleteReply = useCallback(
+    (commentId: number) => setComments(deleteReply(comments, commentId)),
+    [comments],
+  )
 
   return (
     <>
