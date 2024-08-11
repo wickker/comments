@@ -1,5 +1,5 @@
-import { Comment } from "@/types"
 import { ChangeEvent, memo, useState } from "react"
+import { Comment } from "@/types"
 
 type AddNewCommentProps = {
   addNewComment: (newComment: Comment) => void

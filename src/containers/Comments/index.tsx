@@ -1,11 +1,11 @@
-import { AddNewComment, CommentTile } from "@/components"
-import { Comment } from "@/types"
 import { useCallback, useEffect, useState } from "react"
+import InfiniteScrollLoader from "./InfiniteScrollLoader"
+import Loader from "./Loader"
 import { addNewReply, deleteReply, editReply } from "./utils"
+import { AddNewComment, CommentTile } from "@/components"
 import useComment from "@/hooks/query/useComment"
 import useElementVisible from "@/hooks/useElementVisible"
-import Loader from "./Loader"
-import InfiniteScrollLoader from "./InfiniteScrollLoader"
+import { Comment } from "@/types"
 
 const Comments = () => {
   const [comments, setComments] = useState<Comment[]>([])

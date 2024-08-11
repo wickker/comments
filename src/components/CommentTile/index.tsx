@@ -1,15 +1,16 @@
-import { type Comment } from "@/types"
 import { useState, ChangeEvent, useCallback, useMemo } from "react"
-import { CommentInput } from "@/components"
-import { validateInput } from "./utils"
-import CommentTileActions from "./CommentTileActions"
 import CommentText from "./CommentText"
+import CommentTileActions from "./CommentTileActions"
+import { validateInput } from "./utils"
+import { CommentInput } from "@/components"
+import { type Comment } from "@/types"
 
 type CommentProps = {
   addNewReply: (commentId: number, newComment: Comment) => void
   editReply: (commentId: number, editedComment: string) => void
   deleteReply: (commentId: number) => void
 } & Comment
+
 const CommentTile = ({
   id,
   comment,

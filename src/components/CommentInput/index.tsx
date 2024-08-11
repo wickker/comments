@@ -1,6 +1,6 @@
-import { mc } from "@/utils/functions/common"
 import { ChangeEvent, FocusEvent } from "react"
 import CommentInputActions from "./CommentInputActions"
+import { mc } from "@/utils/functions/common"
 
 type CommentInputProps = {
   input: string

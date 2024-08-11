@@ -1,9 +1,9 @@
-import { Comments } from "@/containers"
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query"
+import { Comments } from "@/containers"
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
