@@ -2,10 +2,10 @@ import dummyApi from "@/api/dummyApi"
 import { useQuery } from "@tanstack/react-query"
 
 const useComment = () => {
-    const useGetCommentsQuery = () => {
+    const useGetCommentsQuery = (offset: number) => {
         return useQuery({
-            queryKey: ['comments'],
-            queryFn: dummyApi.getComments
+            queryKey: ['comments', offset],
+            queryFn: () => dummyApi.getComments(offset)
         })
     }
 

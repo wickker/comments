@@ -7,9 +7,10 @@ import { FiLoader } from "react-icons/fi"
 
 const Comments = () => {
   const [comments, setComments] = useState<Comment[]>([])
+  const [offset, setOffset] = useState(0)
   const observerRef = useRef<HTMLDivElement>(null)
   const { useGetCommentsQuery } = useComment()
-  const getComments = useGetCommentsQuery()
+  const getComments = useGetCommentsQuery(offset)
 
   const handleAddNewReply = (commentId: number, newComment: Comment) =>
     setComments(addNewReply(comments, commentId, newComment))
@@ -34,46 +35,55 @@ const Comments = () => {
           deleteReply={handleDeleteReply}
         />
       ))}
-      <div className="bg-pink-300" ref={observerRef}>
-        Observer
-      </div>
+      {getComments.isLoading && offset > 0 ? (
+        <div className="grid place-items-center">
+          <FiLoader className="animate-spin text-2xl text-neutral-400" />
+        </div>
+      ) : (
+        <div ref={observerRef} />
+      )}
     </>
   )
 
   useEffect(() => {
-    if (getComments.data) {
+    if (!getComments.data) return
+    if (offset === 0) {
       setComments(getComments.data)
+      return
     }
-  }, [getComments.data])
-
-  const cb = (entries: IntersectionObserverEntry[]) => {
-    const [entry] = entries
-    console.log(entry.isIntersecting)
-}
+    setComments((prev) => [...prev, ...getComments.data])
+  }, [getComments.data, offset])
 
   useEffect(() => {
-    const observer = new IntersectionObserver(cb)
+    const observer = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]) => {
+        const [entry] = entries
+        // TODO: Refactor
+        if (entry.isIntersecting && offset <= 30) {
+          setOffset((prev) => prev + 10)
+          getComments.refetch()
+        }
+      },
+    )
 
     if (observerRef.current) {
       observer.observe(observerRef.current)
     }
 
-    return () => {
-      observer.disconnect()
-    }
-  }, [observerRef])
+    return () => observer.disconnect()
+  }, [observerRef, getComments, offset])
 
   return (
     <>
       <AddNewComment addNewComment={handleAddNewComment} />
 
-      {getComments.isLoading && (
-        <div className="grid h-full place-items-center">
+      {getComments.isLoading && offset === 0 && (
+        <div className="my-auto grid place-items-center">
           <FiLoader className="animate-spin text-4xl text-neutral-400" />
         </div>
       )}
 
-      {getComments.isFetched && generateCommentTiles()}
+      {comments.length > 0 && generateCommentTiles()}
     </>
   )
 }
