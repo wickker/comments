@@ -1,8 +1,9 @@
 import { useState, ChangeEvent, useCallback, useMemo } from "react"
+import CommentInput from './CommentInput'
+import CommentInputActions from "./CommentInputActions"
 import CommentText from "./CommentText"
 import CommentTileActions from "./CommentTileActions"
 import { validateInput } from "./utils"
-import { CommentInput, CommentInputActions } from "@/components"
 import { type Comment } from "@/types"
 
 type CommentProps = {

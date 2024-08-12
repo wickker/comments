@@ -15,7 +15,7 @@ const Comments = () => {
   const hasOffset = offset > 0
   const hasComments = comments.length > 0
 
-  const isVisibleCallback = useCallback(() => {
+  const fetchMoreCommentsCallback = useCallback(() => {
     if (offset <= 30) {
       // hardcoded 30 for demo purposes
       setOffset((prev) => prev + 10)
@@ -23,7 +23,7 @@ const Comments = () => {
     }
   }, [getComments, offset])
 
-  const { observerRef } = useElementVisible(isVisibleCallback)
+  const { observerRef } = useElementVisible(fetchMoreCommentsCallback)
 
   const handleAddNewReply = (commentId: number, newComment: Comment) =>
     setComments(addNewReply(comments, commentId, newComment))

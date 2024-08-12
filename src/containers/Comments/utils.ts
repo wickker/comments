@@ -49,3 +49,7 @@ export const deleteReply = (
     replies: deleteReply(comment.replies, commentId),
   }))
 }
+
+export const search = (searchPhrase: string): Comment[] => {
+  
+}
