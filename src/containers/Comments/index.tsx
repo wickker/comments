@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import InfiniteScrollLoader from "./InfiniteScrollLoader"
 import Loader from "./Loader"
 import { addNewReply, deleteReply, editReply } from "./utils"
-import { AddNewComment, CommentTile } from "@/components"
+import { AddNewComment, CommentTile, SearchComments } from "@/components"
 import useComment from "@/hooks/query/useComment"
 import useElementVisible from "@/hooks/useElementVisible"
 import { Comment } from "@/types"
@@ -50,6 +50,8 @@ const Comments = () => {
 
   return (
     <>
+      <SearchComments />
+
       <AddNewComment addNewComment={handleAddNewComment} />
 
       {getComments.isLoading && !hasOffset && <Loader />}
