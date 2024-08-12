@@ -9,7 +9,7 @@ export const addNewReply = (
     if (comment.id === commentId) {
       return {
         ...comment,
-        replies: [...comment.replies, newComment],
+        replies: [newComment, ...comment.replies],
       }
     }
     return {

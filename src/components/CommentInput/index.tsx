@@ -1,23 +1,17 @@
-import { ChangeEvent, FocusEvent } from "react"
-import CommentInputActions from "./CommentInputActions"
+import { ChangeEvent, FocusEvent, PropsWithChildren } from "react"
 import { mc } from "@/utils/functions/common"
 
 type CommentInputProps = {
   input: string
-  isInputVisible: boolean
   className?: string
-  onCancel: () => void
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
-  onSubmit: () => void
-}
+} & PropsWithChildren
 
 const CommentInput = ({
   input,
-  isInputVisible,
   className,
   onChange,
-  onCancel,
-  onSubmit,
+  children,
 }: CommentInputProps) => {
   const handleFocus = (e: FocusEvent<HTMLTextAreaElement>) =>
     e.currentTarget.setSelectionRange(
@@ -26,22 +20,17 @@ const CommentInput = ({
     )
 
   return (
-    <>
-      {isInputVisible && (
-        <div className={mc("rounded-md bg-[#E4E8EF] p-2", className)}>
-          {/* TODO: Change height depending on inital content */}
-          <textarea
-            className="block w-full rounded-md border p-[7px]"
-            value={input}
-            onChange={onChange}
-            ref={(ref) => isInputVisible && ref && ref.focus()}
-            onFocus={handleFocus}
-          />
-
-          <CommentInputActions onCancel={onCancel} onSubmit={onSubmit} />
-        </div>
-      )}
-    </>
+    <div className={mc("rounded-md bg-[#E4E8EF] p-2", className)}>
+      {/* TODO: Change height depending on inital content */}
+      <textarea
+        className="block w-full rounded-md border p-[7px]"
+        value={input}
+        onChange={onChange}
+        ref={(ref) => ref && ref.focus()}
+        onFocus={handleFocus}
+      />
+      {children}
+    </div>
   )
 }
 

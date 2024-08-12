@@ -2,7 +2,7 @@ import { useState, ChangeEvent, useCallback, useMemo } from "react"
 import CommentText from "./CommentText"
 import CommentTileActions from "./CommentTileActions"
 import { validateInput } from "./utils"
-import { CommentInput } from "@/components"
+import { CommentInput, CommentInputActions } from "@/components"
 import { type Comment } from "@/types"
 
 type CommentProps = {
@@ -96,24 +96,23 @@ const CommentTile = ({
       )}
 
       {/* Edit reply */}
-      <CommentInput
-        input={input}
-        isInputVisible={isEditVisible}
-        onCancel={closeEdit}
-        onSubmit={submitEdit}
-        onChange={handleInputChange}
-      />
+      {isEditVisible && (
+        <CommentInput input={input} onChange={handleInputChange}>
+          <CommentInputActions onCancel={closeEdit} onSubmit={submitEdit} />
+        </CommentInput>
+      )}
 
       <div className="pl-8">
         {/* Add new reply */}
-        <CommentInput
-          input={input}
-          isInputVisible={isReplyVisible}
-          onCancel={closeReply}
-          onSubmit={submitReply}
-          onChange={handleInputChange}
-          className="mb-4"
-        />
+        {isReplyVisible && (
+          <CommentInput
+            input={input}
+            onChange={handleInputChange}
+            className="mb-4"
+          >
+            <CommentInputActions onCancel={closeReply} onSubmit={submitReply} />
+          </CommentInput>
+        )}
 
         {isExpanded && replyTiles}
       </div>
