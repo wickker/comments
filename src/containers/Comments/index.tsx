@@ -70,6 +70,7 @@ const Comments = () => {
                   addNewReply={handleAddNewReply}
                   editReply={handleEditReply}
                   deleteReply={handleDeleteReply}
+                  isSearchMode={isSearch}
                 />
               ))}
 

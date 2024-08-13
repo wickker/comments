@@ -7,6 +7,7 @@ type CommentTileActionsProps = {
   deleteReply: (commentId: number) => void
   hasReplies: boolean
   isExpanded: boolean
+  isSearchMode: boolean
   toggleIsExpanded: () => void
 }
 
@@ -19,22 +20,27 @@ const CommentTileActions = memo(
     hasReplies,
     isExpanded,
     toggleIsExpanded,
+    isSearchMode,
   }: CommentTileActionsProps) => (
     <div className="ml-2 mt-2 flex gap-x-4">
-      <button className="text-blue-500 underline" onClick={handleReply}>
-        Reply
-      </button>
+      {!isSearchMode && (
+        <>
+          <button className="text-blue-500 underline" onClick={handleReply}>
+            Reply
+          </button>
 
-      <button className="text-blue-500 underline" onClick={handleEdit}>
-        Edit
-      </button>
+          <button className="text-blue-500 underline" onClick={handleEdit}>
+            Edit
+          </button>
 
-      <button
-        className="text-blue-500 underline"
-        onClick={() => deleteReply(id)}
-      >
-        Delete
-      </button>
+          <button
+            className="text-blue-500 underline"
+            onClick={() => deleteReply(id)}
+          >
+            Delete
+          </button>
+        </>
+      )}
 
       {hasReplies && (
         <button className="text-blue-500 underline" onClick={toggleIsExpanded}>

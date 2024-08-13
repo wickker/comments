@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react"
 import { search } from "./utils"
-import CommentTile from "../CommentTile"
+import { CommentTile } from "@/components"
 import useDebounce from "@/hooks/useDebounce"
 import { Comment } from "@/types"
 
@@ -10,7 +10,11 @@ type SearchCommentsProps = {
   comments: Comment[]
 }
 
-const SearchComments = ({ setIsSearch, comments, isSearch }: SearchCommentsProps) => {
+const SearchComments = ({
+  setIsSearch,
+  comments,
+  isSearch,
+}: SearchCommentsProps) => {
   const [searchComments, setSearchComments] = useState(comments)
   const { debounce } = useDebounce()
 
@@ -38,9 +42,10 @@ const SearchComments = ({ setIsSearch, comments, isSearch }: SearchCommentsProps
         />
       </div>
 
-      {isSearch && searchComments.map((c) => (
-        <CommentTile {...c} key={c.id} />
-      ))}
+      {isSearch &&
+        searchComments.map((c) => (
+          <CommentTile {...c} key={c.id} isSearchMode />
+        ))}
     </>
   )
 }

@@ -10,12 +10,14 @@ type CommentProps = {
   addNewReply?: (commentId: number, newComment: Comment) => void
   editReply?: (commentId: number, editedComment: string) => void
   deleteReply?: (commentId: number) => void
+  isSearchMode: boolean
 } & Comment
 
 const CommentTile = ({
   id,
   comment,
   replies,
+  isSearchMode,
   addNewReply = () => {},
   editReply = () => {},
   deleteReply = () => {},
@@ -39,9 +41,10 @@ const CommentTile = ({
           addNewReply={addNewReply}
           editReply={editReply}
           deleteReply={deleteReply}
+          isSearchMode={isSearchMode}
         />
       )),
-    [replies, addNewReply, editReply, deleteReply],
+    [replies, addNewReply, editReply, deleteReply, isSearchMode],
   )
 
   // Replies
@@ -92,6 +95,7 @@ const CommentTile = ({
             hasReplies={replies.length > 0}
             isExpanded={isExpanded}
             toggleIsExpanded={toggleIsExpanded}
+            isSearchMode={isSearchMode}
           />
         </div>
       )}
