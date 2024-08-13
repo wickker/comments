@@ -10,8 +10,11 @@ import { Comment } from "@/types"
 const Comments = () => {
   const [comments, setComments] = useState<Comment[]>([])
   const [offset, setOffset] = useState(0)
+  const [isSearch, setIsSearch] = useState(false)
+
   const { useGetCommentsQuery } = useComment()
   const getComments = useGetCommentsQuery(offset)
+
   const hasOffset = offset > 0
   const hasComments = comments.length > 0
 
@@ -50,28 +53,33 @@ const Comments = () => {
 
   return (
     <>
-      <SearchComments />
+      <SearchComments setIsSearch={setIsSearch} comments={comments} isSearch={isSearch} />
 
-      <AddNewComment addNewComment={handleAddNewComment} />
-
-      {getComments.isLoading && !hasOffset && <Loader />}
-
-      {hasComments && (
+      {!isSearch && (
         <>
-          {comments.map((c) => (
-            <CommentTile
-              {...c}
-              key={c.id}
-              addNewReply={handleAddNewReply}
-              editReply={handleEditReply}
-              deleteReply={handleDeleteReply}
-            />
-          ))}
+          <AddNewComment addNewComment={handleAddNewComment} />
 
-          {getComments.isLoading && hasOffset ? (
-            <InfiniteScrollLoader />
-          ) : (
-            <div ref={observerRef} />
+          {getComments.isLoading && !hasOffset && <Loader />}
+
+          {hasComments && (
+            <>
+              {comments.map((c) => (
+                <CommentTile
+                  {...c}
+                  key={c.id}
+                  addNewReply={handleAddNewReply}
+                  editReply={handleEditReply}
+                  deleteReply={handleDeleteReply}
+                />
+              ))}
+
+              {/* TODO: Refactor this */}
+              {getComments.isLoading && hasOffset ? (
+                <InfiniteScrollLoader />
+              ) : (
+                <div ref={observerRef} />
+              )}
+            </>
           )}
         </>
       )}

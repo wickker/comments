@@ -7,20 +7,20 @@ import { validateInput } from "./utils"
 import { type Comment } from "@/types"
 
 type CommentProps = {
-  addNewReply: (commentId: number, newComment: Comment) => void
-  editReply: (commentId: number, editedComment: string) => void
-  deleteReply: (commentId: number) => void
+  addNewReply?: (commentId: number, newComment: Comment) => void
+  editReply?: (commentId: number, editedComment: string) => void
+  deleteReply?: (commentId: number) => void
 } & Comment
 
 const CommentTile = ({
   id,
   comment,
   replies,
-  addNewReply,
-  editReply,
-  deleteReply,
+  addNewReply = () => {},
+  editReply = () => {},
+  deleteReply = () => {},
 }: CommentProps) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
   const [isReplyVisible, setIsReplyVisible] = useState(false)
   const [isEditVisible, setIsEditVisible] = useState(false)
   const [input, setInput] = useState("")
