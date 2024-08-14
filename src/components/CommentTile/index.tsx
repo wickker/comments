@@ -83,7 +83,7 @@ const CommentTile = ({
   }
 
   return (
-    <div className="flex min-w-[600px] flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4">
       {!isEditVisible && (
         <div className="rounded-md bg-[#E4E8EF] p-2">
           <CommentText comment={comment} />
