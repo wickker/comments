@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import InfiniteScrollLoader from "./InfiniteScrollLoader"
+import InfiniteScroll from "./InfiniteScroll"
 import Loader from "./Loader"
 import { addNewReply, deleteReply, editReply } from "./utils"
 import { AddNewComment, CommentTile, SearchComments } from "@/components"
@@ -53,7 +53,11 @@ const Comments = () => {
 
   return (
     <>
-      <SearchComments setIsSearch={setIsSearch} comments={comments} isSearch={isSearch} />
+      <SearchComments
+        setIsSearch={setIsSearch}
+        comments={comments}
+        isSearch={isSearch}
+      />
 
       {!isSearch && (
         <>
@@ -73,13 +77,10 @@ const Comments = () => {
                   isSearchMode={isSearch}
                 />
               ))}
-
-              {/* TODO: Refactor this */}
-              {getComments.isLoading && hasOffset ? (
-                <InfiniteScrollLoader />
-              ) : (
-                <div ref={observerRef} />
-              )}
+              <InfiniteScroll
+                isLoading={getComments.isLoading && hasOffset}
+                ref={observerRef}
+              />
             </>
           )}
         </>

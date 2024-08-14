@@ -42,10 +42,16 @@ const SearchComments = ({
         />
       </div>
 
-      {isSearch &&
-        searchComments.map((c) => (
-          <CommentTile {...c} key={c.id} isSearchMode />
-        ))}
+      {isSearch && (
+        <>
+          {searchComments.length === 0 && (
+            <p className="text-center">No results found</p>
+          )}
+          {searchComments.map((c) => (
+            <CommentTile {...c} key={c.id} isSearchMode />
+          ))}
+        </>
+      )}
     </>
   )
 }
