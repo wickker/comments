@@ -23,7 +23,7 @@ yarn dev
 1. Makes use of a recursive component `<CommentTile />` to display all comment threads.
 
 2. Initial data fetch built with json-server and React Query for ease of managing server state and advantages like client-side caching. 
-- Infinite scroll has currently been hardcoded to stop at a certain number of comments due to limitations of the set response body returned by json-server.
+- Infinite scroll has currently been hardcoded to stop at a certain number of comments due to limitations imposed by json-server.
 
 3. Create, update and delete operations are handled on client side only through the use of recursive functions to modify state.
 
