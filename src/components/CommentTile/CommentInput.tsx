@@ -25,7 +25,6 @@ const CommentInput = ({
 
   return (
     <div className={mc("rounded-md bg-[#E4E8EF] p-2", className)}>
-      {/* TODO: Change height depending on inital content */}
       <textarea
         className="block w-full rounded-md border p-[7px]"
         value={input}
